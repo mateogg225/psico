@@ -1655,6 +1655,7 @@ h3 {
         transform: scale(1);
     }
 }
+
 /* ==================== 3D REDESIGN STYLES ==================== */
 
 /* 3D Cards Container */
@@ -1672,28 +1673,30 @@ h3 {
     border-radius: 25px;
     padding: 2.5rem 1.5rem 1.5rem;
     text-align: center;
-    box-shadow: 
-        0 20px 40px rgba(0,0,0,0.1), 
-        0 0 0 1px rgba(255,255,255,0.6) inset;
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.6) inset;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transform-style: preserve-3d;
-    border-bottom: 8px solid rgba(0, 0, 0, 0.05); /* Thickness fake */
+    border-bottom: 8px solid rgba(0, 0, 0, 0.05);
+    /* Thickness fake */
 }
 
 .course-card-3d:hover .card-content {
     transform: translateY(-20px) rotateX(5deg) rotateY(-2deg);
-    box-shadow: 
-        0 50px 80px rgba(0,0,0,0.2), 
-        0 0 0 1px rgba(255,255,255,0.9) inset;
+    box-shadow:
+        0 50px 80px rgba(0, 0, 0, 0.2),
+        0 0 0 1px rgba(255, 255, 255, 0.9) inset;
 }
 
 /* Floating 3D Icons */
 .card-icon-float {
     width: 140px;
     height: auto;
-    margin-top: -90px; /* Pop out top */
+    margin-top: -90px;
+    /* Pop out top */
     margin-bottom: 1rem;
-    filter: drop-shadow(0 20px 15px rgba(0,0,0,0.2));
+    filter: drop-shadow(0 20px 15px rgba(0, 0, 0, 0.2));
     animation: floatIcon 4s ease-in-out infinite;
     transform: translateZ(50px);
     display: block;
@@ -1702,8 +1705,15 @@ h3 {
 }
 
 @keyframes floatIcon {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-10px) scale(1.02); }
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-10px) scale(1.02);
+    }
 }
 
 /* Navbar HUD Override */
@@ -1735,4 +1745,63 @@ body.dark-mode .stat-label {
     --shadow: rgba(100, 50, 0, 0.15);
     --island-base: #ffcc99;
     --cloud-color: rgba(255, 230, 200, 0.6);
+}
+
+/* ==================== AUTH PAGES ==================== */
+.auth-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f2f5;
+}
+
+.auth-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 1rem;
+    background: var(--azul);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-submit:hover {
+    opacity: 0.9;
+}
+
+.auth-link {
+    text-align: center;
+    margin-top: 1rem;
+    display: block;
+    color: var(--azul);
+    text-decoration: none;
 }

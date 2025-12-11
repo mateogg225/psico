@@ -1,7 +1,7 @@
 // ==================== BASE DE DATOS COMPLETA - PSICOLOGÍA EN 5 MINUTOS ====================
 // 14 cursos profesionales organizados por categorías
 
-const cursos = [
+export const cursos = [
     // ==================== PSICOANÁLISIS ====================
     {
         id: 1,
@@ -502,7 +502,7 @@ function obtenerComentariosPorLeccion(leccionId) {
 // ==================== GAMIFICACIÓN ====================
 
 // Niveles del sistema de gamificación
-const NIVELES = [
+export const NIVELES = [
     { nivel: 1, nombre: "Estudiante", puntosRequeridos: 0, icono: "📚" },
     { nivel: 2, nombre: "Explorador", puntosRequeridos: 500, icono: "🔍" },
     { nivel: 3, nombre: "Aprendiz", puntosRequeridos: 1000, icono: "🎓" },
@@ -516,7 +516,7 @@ const NIVELES = [
 ];
 
 // Logros desbloqueables
-const LOGROS = [
+export const LOGROS = [
     {
         id: "primer_paso",
         nombre: "Primer Paso",

@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Serve static frontend files (html, css, js, assets)
-app.use(express.static(path.join(__dirname, '../../')));
+app.use(express.static(path.join(__dirname, '../../frontend')));
 
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
