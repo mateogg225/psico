@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Avatar - Psicología en 5 Minutos</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .avatar-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0 0 0.5rem 0;
+            color: #333;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .avatar-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            font-weight: bold;
+            color: white;
+            margin: 2rem auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .color-option {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-option.active {
+            border-color: #333;
+            transform: scale(1.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-save {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 2rem;
+            transition: transform 0.2s;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="avatar-container">
+        <h1>Creá tu Avatar</h1>
+        <p class="subtitle">Personalizá tu identidad en la plataforma</p>
+
+        <div id="avatar-preview" class="avatar-preview" style="background: #667eea;">
+            AB
+        </div>
+
+        <div class="form-group">
+            <label>Tu Nombre</label>
+            <input type="text" id="nombre" placeholder="Ej: Ana Belén" value="">
+        </div>
+
+        <div class="form-group">
+            <label>Elegí un Color</label>
+            <div class="color-palette">
+                <div class="color-option active" style="background: #667eea;" data-color="#667eea"></div>
+                <div class="color-option" style="background: #f093fb;" data-color="#f093fb"></div>
+                <div class="color-option" style="background: #4facfe;" data-color="#4facfe"></div>
+                <div class="color-option" style="background: #43e97b;" data-color="#43e97b"></div>
+                <div class="color-option" style="background: #fa709a;" data-color="#fa709a"></div>
+                <div class="color-option" style="background: #30cfd0;" data-color="#30cfd0"></div>
+                <div class="color-option" style="background: #a8edea;" data-color="#a8edea"></div>
+                <div class="color-option" style="background: #ffd89b;" data-color="#ffd89b"></div>
+                <div class="color-option" style="background: #ff6b6b;" data-color="#ff6b6b"></div>
+                <div class="color-option" style="background: #2d3436;" data-color="#2d3436"></div>
+            </div>
+        </div>
+
+        <button class="btn-save" onclick="guardarAvatar()">Guardar y Continuar</button>
+    </div>
+
+    <script>
+        let colorSeleccionado = '#667eea';
+
+        const nombreInput = document.getElementById('nombre');
+        const avatarPreview = document.getElementById('avatar-preview');
+
+        // Actualizar iniciales en tiempo real
+        nombreInput.addEventListener('input', actualizarIniciales);
+
+        // Selección de color
+        document.querySelectorAll('.color-option').forEach(option => {
+            option.addEventListener('click', function () {
+                document.querySelectorAll('.color-option').forEach(o => o.classList.remove('active'));
+                this.classList.add('active');
+                colorSeleccionado = this.dataset.color;
+                avatarPreview.style.background = colorSeleccionado;
+            });
+        });
+
+        function actualizarIniciales() {
+            const nombre = nombreInput.value.trim();
+            if (!nombre) {
+                avatarPreview.textContent = 'AB';
+                return;
+            }
+
+            const palabras = nombre.split(' ').filter(p => p.length > 0);
+            let iniciales = '';
+
+            if (palabras.length === 1) {
+                iniciales = palabras[0].substring(0, 2).toUpperCase();
+            } else {
+                iniciales = palabras[0][0].toUpperCase() + palabras[palabras.length - 1][0].toUpperCase();
+            }
+
+            avatarPreview.textContent = iniciales;
+        }
+
+        function guardarAvatar() {
+            const nombre = nombreInput.value.trim();
+
+            if (!nombre) {
+                alert('Por favor ingresa tu nombre');
+                return;
+            }
+
+            const avatar = {
+                nombre: nombre,
+                color: colorSeleccionado,
+                iniciales: avatarPreview.textContent
+            };
+
+            // Guardar en localStorage (o enviar al backend si tienes token)
+            localStorage.setItem('avatar', JSON.stringify(avatar));
+
+            alert('¡Avatar creado! 🎉');
+
+            // Redirigir al dashboard o login
+            window.location.href = 'dashboard.html';
+        }
+
+        // Cargar nombre del usuario si existe
+        window.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                // Si hay token, podríamos obtener el nombre del backend
+                // Por ahora usamos el localStorage
+                const avatarGuardado = localStorage.getItem('avatar');
+                if (avatarGuardado) {
+                    const avatar = JSON.parse(avatarGuardado);
+                    nombreInput.value = avatar.nombre;
+                    colorSeleccionado = avatar.color;
+                    actualizarIniciales();
+                    avatarPreview.style.background = colorSeleccionado;
+                    document.querySelectorAll('.color-option').forEach(o => {
+                        if (o.dataset.color === colorSeleccionado) {
+                            o.classList.add('active');
+                        } else {
+                            o.classList.remove('active');
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

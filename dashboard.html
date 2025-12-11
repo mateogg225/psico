@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Psicología en 5 Minutos</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --bg-body: #f0f2f5;
+            --bg-card: #ffffff;
+            --text-main: #333;
+            --text-secondary: #666;
+        }
+
+        body.dark-mode {
+            --bg-body: #1a1a1a;
+            --bg-card: #2d2d2d;
+            --text-main: #f0f0f0;
+            --text-secondary: #aaa;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            padding: 0;
+            margin: 0;
+            transition: background-color 0.3s;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: var(--bg-card);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-brand {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--azul);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--azul);
+        }
+
+        .dashboard-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--azul);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+        }
+
+        /* Courses Grid */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .course-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .course-title {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .progress-bar {
+            background: #eee;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-fill {
+            background: var(--azul);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        /* Buttons */
+        .btn-action {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--azul);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-theme {
+            background: transparent;
+            border: 1px solid var(--text-secondary);
+            color: var(--text-main);
+        }
+
+        .btn-logout {
+            background: #FF6B6B;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="canvas-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></div>
+    <script type="module" src="js/background3d.js"></script>
+    <nav class="navbar">
+        <div class="nav-brand">🧠 Psico Isla</div>
+
+        <!-- HUD Section -->
+        <div class="nav-hud" style="display: flex; gap: 1.5rem; align-items: center;">
+            <div class="hud-item"
+                style="display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 20px;">
+                <img src="assets/hud/fire.png" alt="Racha" style="width: 32px; height: 32px;">
+                <span id="hud-puntos" style="font-weight: 800; color: #FFD700; font-size: 1.2rem;">0</span>
+            </div>
+            <div class="hud-item"
+                style="display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 20px;">
+                <img src="assets/hud/diamond.png" alt="Diamantes" style="width: 32px; height: 32px;">
+                <span id="hud-diamantes" style="font-weight: 800; color: #00BFFF; font-size: 1.2rem;">0</span>
+            </div>
+        </div>
+
+        <div class="nav-menu">
+            <a class="nav-link active" onclick="showSection('cuenta')">Mi Isla</a>
+            <a class="nav-link" onclick="showSection('cursos')">Explorar</a>
+        </div>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <button class="btn-theme" onclick="toggleTheme()">🌙</button>
+            <button class="btn-logout" onclick="logout()">Salir</button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+
+        <!-- SECCIÓN: MI CUENTA -->
+        <div id="sec-cuenta" class="section active">
+            <h1 style="margin-bottom: 2rem;">Hola, <span id="username">Usuario</span> 👋</h1>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="puntos">0</div>
+                    <div class="stat-label">Puntos XP</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="diamantes">0</div>
+                    <div class="stat-label">Diamantes 💎</div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 3rem;">
+                <button class="btn-action" style="background: #FFE66D; color: #333;" onclick="sumar(10, 0)">+10
+                    Puntos</button>
+                <button class="btn-action" style="background: #4ECDC4; color: white;" onclick="sumar(0, 1)">+1
+                    Diamante</button>
+            </div>
+
+            <h2>📚 Mi Progreso</h2>
+            <div id="progreso-cursos" class="courses-grid">
+                <p style="color: var(--text-secondary);">Aún no has empezado ningún curso.</p>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: MIS CURSOS -->
+        <div id="sec-cursos" class="section">
+            <h1 style="margin-bottom: 2rem;">Biblioteca de Cursos</h1>
+            <div class="courses-grid">
+                <div class="course-card-3d">
+                    <div class="card-content">
+                        <img src="assets/icons/couch.png" class="card-icon-float" alt="Psicoanálisis">
+                        <h3 class="course-title">Psicoanálisis I</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Fundamentos de Freud y el
+                            inconsciente.</p>
+                        <button class="btn-action btn-primary"
+                            onclick="empezarCurso(1, 'Psicoanálisis I')">Viajar</button>
+                    </div>
+                </div>
+                <div class="course-card-3d">
+                    <div class="card-content">
+                        <img src="assets/icons/puzzle.png" class="card-icon-float" alt="TCC">
+                        <h3 class="course-title">TCC Básica</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Introducción a la Terapia Cognitivo
+                            Conductual.</p>
+                        <button class="btn-action btn-primary" onclick="empezarCurso(2, 'TCC Básica')">Viajar</button>
+                    </div>
+                </div>
+                <div class="course-card-3d">
+                    <div class="card-content">
+                        <img src="assets/icons/folder.png" class="card-icon-float" alt="Neurociencias">
+                        <h3 class="course-title">Neurociencias</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">El cerebro y la conducta humana.</p>
+                        <button class="btn-action btn-primary"
+                            onclick="empezarCurso(3, 'Neurociencias')">Viajar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token) window.location.href = 'login.html';
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            document.getElementById(`sec-${sectionId}`).classList.add('active');
+            const link = Array.from(document.querySelectorAll('.nav-link')).find(el => el.textContent.includes(sectionId === 'cuenta' ? 'Cuenta' : 'Cursos'));
+            if (link) link.classList.add('active');
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const btn = document.querySelector('.btn-theme');
+            btn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+        }
+
+        async function cargarPerfil() {
+            try {
+                const res = await fetch('http://localhost:5000/user/profile', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (res.ok) {
+                    const user = await res.json();
+                    document.getElementById('username').textContent = user.usuario;
+                    document.getElementById('puntos').textContent = user.puntos;
+                    document.getElementById('diamantes').textContent = user.diamantes;
+                    // Update HUD
+                    document.getElementById('hud-puntos').textContent = user.puntos;
+                    document.getElementById('hud-diamantes').textContent = user.diamantes;
+
+                    const progresoContainer = document.getElementById('progreso-cursos');
+                    if (user.cursos && user.cursos.length > 0) {
+                        progresoContainer.innerHTML = user.cursos.map(c => `
+                            <div class="course-card">
+                                <h3 class="course-title">${c.titulo}</h3>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${c.progreso}%"></div>
+                                </div>
+                                <p style="text-align: right; font-size: 0.8rem; margin-top: 0.5rem;">${c.progreso}%</p>
+                            </div>
+                        `).join('');
+                    } else {
+                        progresoContainer.innerHTML = '<p style="color: var(--text-secondary);">Aún no has empezado ningún curso.</p>';
+                    }
+                } else {
+                    logout();
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function sumar(puntos, diamantes) {
+            try {
+                const res = await fetch('http://localhost:5000/user/sumar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ puntos, diamantes })
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    document.getElementById('puntos').textContent = data.puntos;
+                    document.getElementById('diamantes').textContent = data.diamantes;
+                    // Update HUD
+                    document.getElementById('hud-puntos').textContent = data.puntos;
+                    document.getElementById('hud-diamantes').textContent = data.diamantes;
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function empezarCurso(id, titulo) {
+            try {
+                const res = await fetch('http://localhost:5000/user/enroll', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ cursoId: id, titulo })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    alert(`¡Te inscribiste en: ${titulo}!`);
+                    cargarPerfil();
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Error al inscribirse');
+            }
+        }
+
+        cargarPerfil();
+    </script>
+</body>
+
+</html>

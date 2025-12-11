@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psicología en 5 Minutos - Aprendé Psicología Rápido</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <p class="hero-subtitle">Microcursos diseñados para que entiendas conceptos fundamentales de forma
+        rápida y clara</p>
+    <button class="btn-primary" onclick="mostrarVista('cursos')">Explorar Cursos</button>
+    </div>
+    </section>
+
+    <!-- Tema Aleatorio -->
+    <section class="random-topic">
+        <div class="container">
+            <h2>⏱️ Aprendé en 5 minutos sobre...</h2>
+            <div id="tema-aleatorio" class="topic-card">
+                <!-- Se carga dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Cursos Populares -->
+    <section class="popular-courses">
+        <div class="container">
+            <h2 class="section-title">📚 Microcursos Populares</h2>
+            <div id="cursos-populares" class="courses-grid">
+                <!-- Se carga dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Estadísticas -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="stat-usuarios">1,234</div>
+                    <div class="stat-label">Usuarios Aprendiendo</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="stat-lecciones">48</div>
+                    <div class="stat-label">Lecciones Disponibles</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5 min</div>
+                    <div class="stat-label">Por Lección</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </div>
+
+    <!-- VISTA: BIBLIOTECA DE CURSOS -->
+    <div id="vista-cursos" class="vista">
+        <div class="container">
+            <h1 class="page-title">📚 Biblioteca de Cursos</h1>
+            <p class="page-subtitle">Explorá nuestros microcursos organizados por categoría</p>
+
+            <div id="categorias-cursos">
+                <!-- Se carga dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- VISTA: LECCIÓN -->
+    <div id="vista-leccion" class="vista">
+        <div class="container">
+            <div class="leccion-header">
+                <button class="btn-back" onclick="volverACursos()">← Volver</button>
+                <div class="leccion-progreso">
+                    <span id="leccion-numero">Lección 1 de 5</span>
+                </div>
+            </div>
+
+            <div id="leccion-contenido" class="leccion-container">
+                <!-- Se carga dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- VISTA: PERFIL -->
+    <div id="vista-perfil" class="vista">
+        <div class="perfil-stats">
+            <div class="stat-box">
+                <div class="stat-icon">📊</div>
+                <div class="stat-value" id="perfil-progreso">0%</div>
+                <div class="stat-name">Progreso General</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-icon">✅</div>
+                <div class="stat-value" id="perfil-completados">0</div>
+                <div class="stat-name">Cursos Completados</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-icon">🔥</div>
+                <div class="stat-value" id="perfil-racha">0</div>
+                <div class="stat-name">Días Consecutivos</div>
+            </div>
+        </div>
+
+        <!-- GAMIFICACIÓN -->
+        <div class="gamificacion-container">
+            <!-- Puntos y Nivel -->
+            <div class="nivel-card">
+                <div class="nivel-header">
+                    <div class="nivel-icono" id="nivel-icono">📚</div>
+                    <div class="nivel-info">
+                        <h3 id="nivel-nombre">Estudiante</h3>
+                        <p id="nivel-puntos">0 puntos</p>
+                    </div>
+                </div>
+                <div class="nivel-progreso">
+                    <div class="progreso-bar">
+                        <div id="progreso-nivel" class="progreso-fill"></div>
+                    </div>
+                    <p class="progreso-texto">
+                        <span id="puntos-actuales">0</span> /
+                        <span id="puntos-siguiente">500</span>
+                        para <span id="siguiente-nivel">Explorador</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Racha -->
+            <div class="racha-card">
+                <div class="racha-icono">🔥</div>
+                <div class="racha-info">
+                    <h3 id="racha-dias">0 días</h3>
+                    <p>Racha actual</p>
+                </div>
+                <div class="racha-maxima">
+                    <p>Máxima: <span id="racha-max">0</span></p>
+                </div>
+            </div>
+
+            <!-- Logros Gamificados -->
+            <div class="logros-seccion">
+                <h2>🏆 Logros Desbloqueados</h2>
+                <div id="logros-grid" class="logros-grid-gamificado">
+                    <!-- Se carga dinámicamente -->
+                </div>
+            </div>
+        </div>
+
+        <div class="perfil-seccion">
+            <h2>📖 Mis Cursos en Progreso</h2>
+            <div id="cursos-en-progreso" class="cursos-lista">
+                <!-- Se carga dinámicamente -->
+            </div>
+        </div>
+
+        <div class="perfil-seccion">
+            <h2>🎯 Mis Logros</h2>
+            <div id="logros" class="logros-grid">
+                <!-- Se carga dinámicamente -->
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <!-- MODAL: PREMIUM -->
+    <div id="modal-premium" class="modal">
+        <div class="modal-content modal-premium">
+            <button class="close-btn" onclick="cerrarModalPremium()">&times;</button>
+            <div class="premium-header">
+                <h2>👑 Hacete Premium</h2>
+                <p>Desbloqueá todo el potencial de tu aprendizaje</p>
+            </div>
+            <div class="premium-beneficios">
+                <div class="beneficio">
+                    <span class="beneficio-icon">✅</span>
+                    <span>Acceso a todos los cursos</span>
+                </div>
+                <div class="beneficio">
+                    <span class="beneficio-icon">📄</span>
+                    <span>PDFs descargables por curso</span>
+                </div>
+                <div class="beneficio">
+                    <span class="beneficio-icon">🎥</span>
+                    <span>Videos explicativos exclusivos</span>
+                </div>
+                <div class="beneficio">
+                    <span class="beneficio-icon">🤖</span>
+                    <span>Asistente IA "Preguntale al Psicólogo"</span>
+                </div>
+                <div class="beneficio">
+                    <span class="beneficio-icon">🎯</span>
+                    <span>Sin anuncios</span>
+                </div>
+                <div class="beneficio">
+                    <span class="beneficio-icon">📊</span>
+                    <span>Estadísticas avanzadas</span>
+                </div>
+            </div>
+            <div class="premium-precio">
+                <span class="precio">$2,500</span>
+                <span class="periodo">/mes</span>
+            </div>
+            <button class="btn-activar-premium" onclick="activarPremium()">
+                Activar Premium Ahora
+            </button>
+            <p class="premium-nota">Podés cancelar cuando quieras</p>
+        </div>
+    </div>
+
+    <!-- MODAL: ASISTENTE IA (Solo Premium) -->
+    <div id="modal-ia" class="modal">
+        <div class="modal-content modal-ia">
+            <button class="close-btn" onclick="cerrarModalIA()">&times;</button>
+            <div class="ia-header">
+                <h2>🤖 Preguntale al Psicólogo</h2>
+                <p>Tu asistente de IA para dudas de psicología</p>
+            </div>
+            <div id="ia-chat" class="ia-chat">
+                <!-- Mensajes del chat -->
+            </div>
+            <div class="ia-input">
+                <input type="text" id="ia-pregunta" placeholder="Hacé tu pregunta...">
+                <button onclick="enviarPreguntaIA()">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón flotante IA (solo visible para premium) -->
+    <button id="btn-ia-flotante" class="btn-ia-flotante" onclick="mostrarModalIA()" style="display: none;">
+        🤖
+    </button>
+
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+    </body>
+
+</html>
