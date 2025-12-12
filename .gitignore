@@ -26,3 +26,6 @@ yarn-error.log*
 
 # User custom ignores
 _legacy_backup/
+
+# Agent rules (configuración personal del proyecto)
+.agent/rules/*
