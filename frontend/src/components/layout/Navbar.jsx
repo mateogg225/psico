@@ -1,5 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useGame } from '../../context/GameContext';
 import {
     AppBar,
     Toolbar,
@@ -24,9 +25,12 @@ import {
 export default function Navbar() {
     const navigate = useNavigate();
     const location = useLocation();
+    const { diamonds } = useGame();
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
     const [user] = useState(JSON.parse(localStorage.getItem('usuario')) || { nombre: 'Invitado' });
     const [anchorElUser, setAnchorElUser] = useState(null);
+    const [moonPhase, setMoonPhase] = useState(theme === 'light' ? '🌕' : '🌑');
+    const [isAnimating, setIsAnimating] = useState(false);
 
     // Hide Navbar on Login and Register pages
     if (['/login', '/register'].includes(location.pathname)) {
@@ -34,10 +38,22 @@ export default function Navbar() {
     }
 
     const toggleTheme = () => {
+        if (isAnimating) return; // Prevent multiple clicks during animation
+
+        setIsAnimating(true);
         const newTheme = theme === 'light' ? 'dark' : 'light';
-        setTheme(newTheme);
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
+
+        // Step 1: Show crescent moon (transition phase)
+        setMoonPhase('🌓');
+
+        // Step 2: After 200ms, show final moon phase and change theme
+        setTimeout(() => {
+            setMoonPhase(newTheme === 'light' ? '🌕' : '🌑');
+            setTheme(newTheme);
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            setIsAnimating(false);
+        }, 200);
     };
 
     const handleOpenUserMenu = (event) => {
@@ -52,22 +68,15 @@ export default function Navbar() {
         <AppBar position="static" sx={{ bgcolor: '#e0e0e0', color: '#333', boxShadow: 1 }}>
             <Toolbar>
                 {/* Logo Section */}
-                <Typography
-                    variant="h6"
-                    noWrap
-                    component="div"
-                    sx={{
-                        mr: 2,
-                        display: { xs: 'none', md: 'flex' },
-                        fontWeight: 'bold',
-                        cursor: 'pointer',
-                        alignItems: 'center',
-                        gap: 1
-                    }}
-                    onClick={() => navigate('/')}
+                <div
+                    className="mr-4 hidden md:flex items-center gap-3 cursor-pointer hover:scale-105 transition-transform"
+                    onClick={() => navigate('/dashboard')}
                 >
-                    🏝️ Psico Isla
-                </Typography>
+                    <span className="text-4xl">🏝️</span>
+                    <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        Psico Isla
+                    </span>
+                </div>
 
                 {/* Mobile Menu Icon (Placeholder for responsiveness) */}
                 <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -92,22 +101,63 @@ export default function Navbar() {
                         </Box>
                     </Tooltip>
 
-                    <Tooltip title="Puntos Insight acumulados">
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                            <Diamond color="primary" />
-                            <Typography variant="subtitle1" fontWeight="bold">0</Typography>
+                    <Tooltip title="Diamantes - Clic para ir a la tienda">
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 0.5,
+                                cursor: 'pointer',
+                                padding: '4px 8px',
+                                borderRadius: '8px',
+                                transition: 'background-color 0.2s',
+                                '&:hover': {
+                                    backgroundColor: 'rgba(255, 215, 0, 0.2)'
+                                }
+                            }}
+                            onClick={() => navigate('/shop')}
+                        >
+                            <Diamond sx={{ color: '#FFD700' }} />
+                            <Typography variant="subtitle1" fontWeight="bold" sx={{ color: '#FFD700' }}>
+                                {diamonds}
+                            </Typography>
                         </Box>
                     </Tooltip>
 
                     {/* Navigation Buttons */}
-                    <Button color="inherit" onClick={() => navigate('/dashboard')}>Dashboard</Button>
+                    <Button color="inherit" onClick={() => navigate('/dashboard')}>🚹🚺</Button>
                     <Button color="inherit" onClick={() => navigate('/courses')}>Cursos</Button>
+                    <Button
+                        color="inherit"
+                        onClick={() => navigate('/mentores')}
+                        sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}
+                    >
+                        🎓 Mentores
+                    </Button>
+                    <Button
+                        color="inherit"
+                        onClick={() => navigate('/shop')}
+                        sx={{
+                            background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
+                            color: '#000',
+                            fontWeight: 'bold',
+                            '&:hover': {
+                                background: 'linear-gradient(135deg, #FFA500 0%, #FFD700 100%)'
+                            }
+                        }}
+                    >
+                        💎 Tienda
+                    </Button>
                 </Box>
 
                 {/* Theme & Profile Actions */}
                 <Box sx={{ flexGrow: 0, ml: 3, display: 'flex', gap: 1 }}>
-                    <IconButton onClick={toggleTheme} color="inherit">
-                        {theme === 'light' ? <Brightness7 /> : <Brightness4 />}
+                    <IconButton
+                        onClick={toggleTheme}
+                        color="inherit"
+                        sx={{ fontSize: '1.75rem', transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.1)' } }}
+                    >
+                        {moonPhase}
                     </IconButton>
 
                     <Tooltip title="Abrir perfil">

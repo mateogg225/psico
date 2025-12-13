@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cursos, NIVELES, LOGROS } from '../data/data';
+import { useGame } from '../context/GameContext';
+import { shopCategories } from '../data/shopCategories';
 
 export default function DashboardPage() {
-    // Dashboard Logic Migrated
     const navigate = useNavigate();
+    const { diamonds, inventory } = useGame();
+
     const [usuario, setUsuario] = useState(JSON.parse(localStorage.getItem('usuario')) || {
         nombre: "Usuario",
         email: "usuario@ejemplo.com",
@@ -46,127 +49,148 @@ export default function DashboardPage() {
         !usuario.progreso.cursosCompletados.includes(c.id)
     );
 
+    // Get purchased furniture/decoration items
+    const getAllShopItems = () => {
+        const allItems = [];
+        shopCategories.forEach(cat => {
+            cat.items.forEach(item => allItems.push(item));
+        });
+        return allItems;
+    };
+
+    const consultorioItems = getAllShopItems().filter(item =>
+        inventory.includes(item.id) && (item.tipo === 'MUEBLE' || item.tipo === 'DECORACIÓN')
+    );
+
     return (
         <div className="vista active">
-            <div className="perfil-container">
-                {/* Profile Header */}
-                <div className="perfil-header">
-                    <div className="perfil-avatar">
-                        {usuario.nombre[0]?.toUpperCase()}
-                    </div>
-                    <div className="perfil-info">
-                        <h2 id="perfil-nombre">{usuario.nombre}</h2>
-                        <span className="perfil-badge">{usuario.premium ? '👑 Premium' : 'Free'}</span>
-                    </div>
-                </div>
-
-                {/* Stats Grid */}
-                <div className="perfil-stats">
-                    <div className="stat-box">
-                        <div className="stat-icon">📊</div>
-                        <div className="stat-value">{progresoPorcentaje}%</div>
-                        <div className="stat-name">Progreso General</div>
-                    </div>
-                    <div className="stat-box">
-                        <div className="stat-icon">✅</div>
-                        <div className="stat-value">{usuario.progreso.cursosCompletados.length}</div>
-                        <div className="stat-name">Cursos Completados</div>
-                    </div>
-                    <div className="stat-box">
-                        <div className="stat-icon">🔥</div>
-                        <div className="stat-value">{usuario.progreso.racha}</div>
-                        <div className="stat-name">Días Consecutivos</div>
-                    </div>
-                </div>
-
-                {/* Gamification Container */}
-                <div className="gamificacion-container">
-                    {/* Level Card */}
-                    <div className="nivel-card">
-                        <div className="nivel-header">
-                            <div className="nivel-icono">{nivelData.icono}</div>
-                            <div className="nivel-info">
-                                <h3>{nivelData.nombre}</h3>
-                                <p>{puntos} puntos</p>
+            {/* HERO SECTION - Avatar y Identidad */}
+            <div className="divan-hero-banner">
+                <div className="divan-hero-content">
+                    {/* Avatar 3D Central */}
+                    <div className="divan-avatar-container">
+                        <div className="divan-avatar-3d">
+                            <div className="avatar-placeholder">
+                                {usuario.nombre[0]?.toUpperCase()}
                             </div>
                         </div>
-                        <div className="nivel-progreso">
-                            <div className="progreso-bar">
+
+                        {/* Nombre de usuario */}
+                        <h2 className="divan-user-name">{usuario.nombre}</h2>
+
+                        {/* Nivel/Arquetipo Gamificado */}
+                        <div className="divan-level-badge">
+                            {nivelData.icono} Nivel {nivelData.nivel}: {nivelData.nombre}
+                        </div>
+                    </div>
+
+                    {/* Botón Personalizar Avatar (derecha) */}
+                    <button className="divan-customize-button" onClick={() => navigate('/avatar')}>
+                        <span className="customize-icon">✏️</span>
+                        <span>Personalizar mi Avatar</span>
+                    </button>
+                </div>
+            </div>
+
+            {/* Contenedor principal */}
+            <div className="divan-container">
+                {/* SECCIÓN DE ESTADÍSTICAS - 3 tarjetas premium */}
+                <div className="divan-stats-grid">
+                    <div className="divan-stat-card">
+                        <div className="stat-icon-premium">📊</div>
+                        <div className="stat-value-premium">{progresoPorcentaje}%</div>
+                        <div className="stat-name-premium">Progreso General</div>
+                    </div>
+
+                    <div className="divan-stat-card">
+                        <div className="stat-icon-premium">✅</div>
+                        <div className="stat-value-premium">{usuario.progreso.cursosCompletados.length}</div>
+                        <div className="stat-name-premium">Cursos Completados</div>
+                    </div>
+
+                    <div className="divan-stat-card">
+                        <div className="stat-icon-premium">🔥</div>
+                        <div className="stat-value-premium">{usuario.progreso.racha}</div>
+                        <div className="stat-name-premium">Días Consecutivos</div>
+                    </div>
+                </div>
+
+                {/* SECCIÓN MI CONSULTORIO - Visualización de Inventario */}
+                <div className="divan-consultorio-section">
+                    <h2 className="divan-section-title">🏡 Mi Consultorio</h2>
+                    <p className="divan-section-subtitle">Así se ve tu espacio personalizado</p>
+
+                    <div className="consultorio-room">
+                        {consultorioItems.length > 0 ? (
+                            <div className="consultorio-items-display">
+                                {consultorioItems.map(item => (
+                                    <div key={item.id} className="consultorio-item-placed">
+                                        <div className="item-icon-lg">{item.img}</div>
+                                        <div className="item-name-sm">{item.titulo}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="consultorio-empty-state">
+                                <div className="empty-icon-lg">🏚️</div>
+                                <p className="empty-text-main">Tu espacio está vacío</p>
+                                <p className="empty-text-sub">¡Visita el Bazar para decorarlo!</p>
+                                <button
+                                    className="btn-to-shop"
+                                    onClick={() => navigate('/shop')}
+                                >
+                                    💎 Ir al Bazar
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* CURSOS EN PROGRESO */}
+                <div className="divan-section-card">
+                    <h2 className="divan-section-title">📚 Mis Cursos en Progreso</h2>
+                    {cursosEnProgreso.length > 0 ? (
+                        <div className="cursos-en-progreso-grid">
+                            {cursosEnProgreso.map(curso => (
                                 <div
-                                    className="progreso-fill"
-                                    style={{
-                                        width: siguienteNivel
-                                            ? `${((puntos - nivelData.puntosRequeridos) / (siguienteNivel.puntosRequeridos - nivelData.puntosRequeridos)) * 100}%`
-                                            : '100%'
-                                    }}
-                                ></div>
-                            </div>
-                            <p className="progreso-texto">
-                                {siguienteNivel
-                                    ? `${puntos} / ${siguienteNivel.puntosRequeridos} para ${siguienteNivel.nombre}`
-                                    : '¡Nivel máximo alcanzado! 👑'}
-                            </p>
+                                    key={curso.id}
+                                    className="curso-progreso-card"
+                                    onClick={() => navigate(`/course/${curso.id}`)}
+                                >
+                                    <div className="curso-icon-lg">{curso.imagen}</div>
+                                    <div className="curso-info">
+                                        <h4>{curso.nombre}</h4>
+                                        <p className="curso-categoria">{curso.categoria}</p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                    </div>
-
-                    {/* Streak Card */}
-                    <div className="racha-card">
-                        <div className="racha-icono">🔥</div>
-                        <div className="racha-info">
-                            <h3>{racha} días</h3>
-                            <p>Racha actual</p>
-                        </div>
-                        <div className="racha-maxima">
-                            <p>Máxima: {rachaMaxima}</p>
-                        </div>
-                    </div>
+                    ) : (
+                        <p className="empty-message">No tienes cursos en progreso</p>
+                    )}
                 </div>
 
-                {/* Courses in Progress Section */}
-                <div className="perfil-seccion">
-                    <h2>📖 Mis Cursos en Progreso</h2>
-                    <div className="cursos-lista">
-                        {cursosEnProgreso.length > 0 ? cursosEnProgreso.map(c => (
-                            <div key={c.id} className="course-card" onClick={() => navigate(`/courses`)}>
-                                <div className="course-icon">{c.imagen}</div>
-                                <h3>{c.nombre}</h3>
-                            </div>
-                        )) : <p>No tenés cursos en progreso</p>}
-                    </div>
-                </div>
-
-                {/* Achievements Section */}
-                <div className="perfil-seccion">
-                    <h2>🏆 Logros Desbloqueados</h2>
+                {/* LOGROS */}
+                <div className="divan-section-card">
+                    <h2 className="divan-section-title">🏆 Logros Desbloqueados</h2>
                     <div className="logros-grid">
-                        {LOGROS.map(logro => (
-                            <div key={logro.id} className={`logro-card ${logrosDesbloqueados.includes(logro.id) ? '' : 'bloqueado'}`}>
-                                <div className="logro-icono">{logro.icono}</div>
-                                <h4>{logro.nombre}</h4>
-                                <p className="logro-descripcion">{logro.descripcion}</p>
-                            </div>
-                        ))}
+                        {LOGROS.map(logro => {
+                            const desbloqueado = logro.condicion();
+                            return (
+                                <div
+                                    key={logro.id}
+                                    className={`logro-card ${desbloqueado ? 'unlocked' : 'locked'}`}
+                                >
+                                    <div className={`logro-icon ${!desbloqueado ? 'grayscale' : ''}`}>
+                                        {logro.icono}
+                                    </div>
+                                    <div className="logro-name">{logro.nombre}</div>
+                                    <div className="logro-desc">{logro.descripcion}</div>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
-
-                <div className="perfil-seccion">
-                    <h2>🎯 Mis Logros (Legacy View)</h2>
-                    <div id="logros" className="logros-grid">
-                        {/* Simple view from array logic in original code */}
-                        {[
-                            { nombre: 'Primera Lección', icon: '🎯', desbloqueado: usuario.progreso.leccionesCompletadas.length >= 1 },
-                            { nombre: '5 Lecciones', icon: '📚', desbloqueado: usuario.progreso.leccionesCompletadas.length >= 5 },
-                            { nombre: 'Racha de 7 días', icon: '🔥', desbloqueado: usuario.progreso.racha >= 7 },
-                            { nombre: 'Primer Curso', icon: '🏆', desbloqueado: usuario.progreso.cursosCompletados.length >= 1 }
-                        ].map((l, idx) => (
-                            <div key={idx} className={`logro ${l.desbloqueado ? 'desbloqueado' : 'bloqueado'}`}>
-                                <div style={{ fontSize: '2rem', filter: !l.desbloqueado ? 'grayscale(1) opacity(0.3)' : '' }}>{l.icon}</div>
-                                <p>{l.nombre}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
             </div>
         </div>
     );

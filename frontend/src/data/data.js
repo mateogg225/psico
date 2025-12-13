@@ -455,8 +455,73 @@ export const cursos = [
                 ]
             }
         ]
+    },
+    // ==================== NUEVOS CURSOS AGREGADOS ====================
+    {
+        id: 15,
+        nombre: "El Inconsciente de Freud",
+        categoria: "Psicoanálisis",
+        descripcion: "Descubre la teoría que revolucionó la psicología: el Ello, el Yo y el Superyó, y cómo los sueños revelan deseos ocultos.",
+        imagen: "🏔️",
+        premium: false,
+        lecciones: [
+            {
+                id: 25,
+                titulo: "El Iceberg Mental",
+                contenido: "Freud comparaba la mente con un iceberg. La parte visible (consciencia) es solo una pequeña fracción. La mayor parte está sumergida: el inconsciente, que contiene deseos, miedos y recuerdos reprimidos que influyen en nuestra conducta sin que lo sepamos.",
+                ejemplo: "Olvidás sistemáticamente el cumpleaños de alguien. No es mala memoria: tu inconsciente puede estar expresando un conflicto no resuelto con esa persona.",
+                quiz: [
+                    { pregunta: "¿Qué representa el iceberg en la teoría freudiana?", opciones: ["La memoria", "La estructura de la mente", "El cerebro físico", "Los sueños"], correcta: 1, explicacion: "El iceberg representa la mente: la parte visible es la consciencia, la sumergida es el inconsciente." },
+                    { pregunta: "¿Qué instancia busca satisfacción inmediata?", opciones: ["El Yo", "El Ello", "El Superyó", "La Consciencia"], correcta: 1, explicacion: "El Ello es la instancia primitiva que busca placer inmediato sin considerar consecuencias." },
+                    { pregunta: "¿Qué función tiene el Superyó?", opciones: ["Buscar placer", "Instancia moral y autocrítica", "Controlar el cuerpo", "Recordar información"], correcta: 1, explicacion: "El Superyó es nuestra instancia moral, contiene normas y valores internalizados." }
+                ]
+            }
+        ]
+    },
+    {
+        id: 16,
+        nombre: "Conductismo: ¿Por qué hacemos lo que hacemos?",
+        categoria: "Psicología del Aprendizaje",
+        descripcion: "Desde los perros de Pavlov hasta Skinner. Aprende cómo el entorno y los refuerzos moldean nuestra conducta observable.",
+        imagen: "🔔",
+        premium: false,
+        lecciones: [
+            {
+                id: 26,
+                titulo: "De Pavlov a Skinner",
+                contenido: "El conductismo estudia comportamientos observables. Pavlov (condicionamiento clásico) demostró cómo asociamos estímulos. Skinner (condicionamiento operante) probó que las consecuencias moldean conductas: refuerzos aumentan comportamientos, castigos los disminuyen.",
+                ejemplo: "Un niño limpia su habitación (conducta). Si recibe elogios y privilegios (refuerzo positivo), repetirá la conducta. Si se le quitan privilegios cuando NO limpia (castigo negativo), también aprenderá.",
+                quiz: [
+                    { pregunta: "¿Qué estudia el conductismo?", opciones: ["Pensamientos internos", "Conductas observables", "Sueños", "Emociones ocultas"], correcta: 1, explicacion: "El conductismo se enfoca en conductas observables y medibles, no en procesos mentales internos." },
+                    { pregunta: "¿Qué es un refuerzo positivo?", opciones: ["Quitar algo negativo", "Agregar algo agradable", "Ignorar la conducta", "Castigar"], correcta: 1, explicacion: "Refuerzo positivo es agregar un estímulo agradable para aumentar una conducta." },
+                    { pregunta: "¿Quién estudió el condicionamiento operante?", opciones: ["Freud", "Pavlov", "Skinner", "Watson"], correcta: 2, explicacion: "B.F. Skinner desarrolló la teoría del condicionamiento operante con su famosa 'caja de Skinner'." }
+                ]
+            }
+        ]
+    },
+    {
+        id: 17,
+        nombre: "Ansiedad y Estrés Moderno",
+        categoria: "Psicología Clínica",
+        descripcion: "Diferencias claves entre estrés útil y ansiedad patológica. Mecanismos de defensa y técnicas básicas de afrontamiento.",
+        imagen: "🧘",
+        premium: false,
+        lecciones: [
+            {
+                id: 27,
+                titulo: "Estrés vs Ansiedad",
+                contenido: "ESTRÉS: respuesta adaptativa ante demandas concretas (examen, entrevista). Desaparece al resolver el problema. ANSIEDAD: preocupación excesiva, persistente y desproporcionada, sin amenaza real clara. Puede incluir síntomas físicos (taquicardia, sudoración, tensión muscular).",
+                ejemplo: "Estrés: nervios antes de una presentación laboral (desaparecen después). Ansiedad: preocupación constante de que 'algo malo pasará' sin motivo específico, que interfiere con la vida diaria.",
+                quiz: [
+                    { pregunta: "¿Cuál es la diferencia principal?", opciones: ["No hay diferencia", "El estrés es adaptativo ante problemas reales, la ansiedad es excesiva", "El estrés es peor", "La ansiedad es normal"], correcta: 1, explicacion: "El estrés es una respuesta normal ante demandas reales; la ansiedad es excesiva y desproporcionada." },
+                    { pregunta: "¿Qué NO es un síntoma físico de ansiedad?", opciones: ["Taquicardia", "Sudoración", "Tensión muscular", "Pérdida de memoria a largo plazo"], correcta: 3, explicacion: "La ansiedad causa síntomas físicos como taquicardia y sudoración, pero no pérdida de memoria permanente." },
+                    { pregunta: "¿Qué técnica ayuda con la ansiedad?", opciones: ["Evitar todas las situaciones", "Respiración profunda y mindfulness", "Dormir todo el día", "Ignorarla completamente"], correcta: 1, explicacion: "Técnicas como respiración profunda, mindfulness y exposición gradual son efectivas contra la ansiedad." }
+                ]
+            }
+        ]
     }
 ];
+
 
 // USUARIO
 let usuario = JSON.parse(localStorage.getItem('usuario')) || {

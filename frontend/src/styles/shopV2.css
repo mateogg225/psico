@@ -1,0 +1,307 @@
+/* ==================== SHOP PAGE V2 - CATEGORIZED ==================== */
+
+/* Contenedor principal */
+.shop-container-v2 {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* ==================== HEADER ==================== */
+.shop-header-v2 {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.shop-header-v2 h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.shop-subtitle-v2 {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
+/* ==================== BALANCE CARD (Grande y blanca) ==================== */
+.shop-balance-card {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07), 0 10px 20px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    min-width: 280px;
+}
+
+.balance-label-v2 {
+    display: block;
+    font-size: 0.95rem;
+    color: #6b7280;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.balance-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.diamond-icon-large {
+    font-size: 2.5rem;
+}
+
+.balance-amount-large {
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ==================== MESSAGE FEEDBACK ==================== */
+.shop-message-v2 {
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-weight: 600;
+    animation: slideDown 0.3s ease;
+}
+
+.shop-message-v2.success {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.shop-message-v2.error {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==================== CATEGORY SECTION ==================== */
+.shop-category-section {
+    margin-bottom: 3.5rem;
+}
+
+.category-title-v2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+}
+
+/* ==================== ITEMS GRID ==================== */
+.shop-items-grid-v2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .shop-items-grid-v2 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ==================== SHOP ITEM CARD ==================== */
+.shop-item-card-v2 {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07), 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.shop-item-card-v2:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1), 0 16px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* Pill/Etiqueta de tipo (arriba) */
+.shop-item-type-pill {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    padding: 0.375rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+/* Imagen del icono 3D (grande y centrada) */
+.shop-item-icon-large {
+    font-size: 4rem;
+    line-height: 1;
+    margin-bottom: 1rem;
+}
+
+/* Título del producto */
+.shop-item-title-v2 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.3;
+}
+
+/* Descripción (texto gris) */
+.shop-item-description-v2 {
+    font-size: 0.875rem;
+    color: #6b7280;
+    line-height: 1.4;
+    margin: 0 0 1rem 0;
+    flex-grow: 1;
+}
+
+/* Precio */
+.shop-item-price-v2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.diamond-icon-v2 {
+    font-size: 1.5rem;
+}
+
+.price-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Botón de compra */
+.shop-item-button-v2 {
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    border: none;
+    border-radius: 16px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Botón cuando se puede comprar */
+.shop-item-button-v2.can-afford {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.shop-item-button-v2.can-afford:hover {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+/* Botón cuando NO se puede comprar (insuficiente) */
+.shop-item-button-v2.insufficient {
+    background: #e5e7eb;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+/* Botón cuando ya fue comprado */
+.shop-item-button-v2.owned {
+    background: #d1fae5;
+    color: #065f46;
+    cursor: default;
+}
+
+/* ==================== BACK BUTTON ==================== */
+.shop-back-button-container {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.shop-back-button {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
+    padding: 0.875rem 2rem;
+    border-radius: 16px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.shop-back-button:hover {
+    background: var(--bg-hover);
+    border-color: var(--azul);
+    color: var(--azul);
+    transform: translateY(-2px);
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+    .shop-header-v2 h1 {
+        font-size: 2rem;
+    }
+
+    .balance-amount-large {
+        font-size: 2.5rem;
+    }
+
+    .category-title-v2 {
+        font-size: 1.5rem;
+    }
+
+    .shop-item-icon-large {
+        font-size: 3.5rem;
+    }
+
+    .shop-items-grid-v2 {
+        gap: 1rem;
+    }
+
+    .shop-item-card-v2 {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .shop-balance-card {
+        min-width: auto;
+        width: 100%;
+    }
+
+    .balance-amount-large {
+        font-size: 2rem;
+    }
+
+    .diamond-icon-large {
+        font-size: 2rem;
+    }
+}
