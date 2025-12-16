@@ -1,9 +1,18 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 
+/**
+ * Contexto de Gamificación
+ * Maneja el estado global del sistema de gamificación: diamantes e inventario
+ */
+
 // Crear el contexto
 const GameContext = createContext();
 
-// Hook personalizado para usar el contexto
+/**
+ * Hook personalizado para usar el contexto de gamificación
+ * @throws {Error} Si se usa fuera del GameProvider
+ * @returns {Object} Contexto con diamantes, inventario y funciones
+ */
 export const useGame = () => {
     const context = useContext(GameContext);
     if (!context) {
@@ -12,7 +21,10 @@ export const useGame = () => {
     return context;
 };
 
-// Provider del contexto
+/**
+ * Provider del contexto de gamificación
+ * Provee estado global para diamantes e inventario con persistencia en localStorage
+ */
 export const GameProvider = ({ children }) => {
     // Estado de diamantes (inicia con 50 de regalo)
     const [diamonds, setDiamonds] = useState(() => {
@@ -20,7 +32,7 @@ export const GameProvider = ({ children }) => {
         return saved ? parseInt(saved) : 50;
     });
 
-    // Estado de inventario (items comprados)
+    // Estado de inventario (items comprados por el usuario)
     const [inventory, setInventory] = useState(() => {
         const saved = localStorage.getItem('userInventory');
         return saved ? JSON.parse(saved) : [];
@@ -36,12 +48,19 @@ export const GameProvider = ({ children }) => {
         localStorage.setItem('userInventory', JSON.stringify(inventory));
     }, [inventory]);
 
-    // Función para agregar diamantes
+    /**
+     * Agregar diamantes al saldo del usuario
+     * @param {number} amount - Cantidad de diamantes a agregar
+     */
     const addDiamonds = (amount) => {
         setDiamonds(prev => prev + amount);
     };
 
-    // Función para comprar un item
+    /**
+     * Comprar un item de la tienda
+     * @param {Object} item - Item a comprar (debe tener id, name, price)
+     * @returns {Object} Resultado de la compra {success: boolean, message: string}
+     */
     const purchaseItem = (item) => {
         // Verificar si tiene suficientes diamantes
         if (diamonds < item.price) {
@@ -69,12 +88,18 @@ export const GameProvider = ({ children }) => {
         };
     };
 
-    // Función para verificar si el usuario tiene un item
+    /**
+     * Verificar si el usuario tiene un item específico
+     * @param {string} itemId - ID del item a verificar
+     * @returns {boolean} true si el usuario tiene el item
+     */
     const hasItem = (itemId) => {
         return inventory.includes(itemId);
     };
 
-    // Función para resetear todo (útil para testing)
+    /**
+     * Resetear todo el progreso de gamificación (útil para testing)
+     */
     const resetGame = () => {
         setDiamonds(50);
         setInventory([]);

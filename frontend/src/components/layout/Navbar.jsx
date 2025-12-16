@@ -1,5 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useGame } from '../../context/GameContext';
 import {
     AppBar,
     Toolbar,
@@ -24,6 +25,7 @@ import {
 export default function Navbar() {
     const navigate = useNavigate();
     const location = useLocation();
+    const { diamonds } = useGame();
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
     const [user] = useState(JSON.parse(localStorage.getItem('usuario')) || { nombre: 'Invitado' });
     const [anchorElUser, setAnchorElUser] = useState(null);
@@ -92,16 +94,46 @@ export default function Navbar() {
                         </Box>
                     </Tooltip>
 
-                    <Tooltip title="Puntos Insight acumulados">
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                            <Diamond color="primary" />
-                            <Typography variant="subtitle1" fontWeight="bold">0</Typography>
+                    <Tooltip title="Diamantes - Clic para ir a la tienda">
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 0.5,
+                                cursor: 'pointer',
+                                padding: '4px 8px',
+                                borderRadius: '8px',
+                                transition: 'background-color 0.2s',
+                                '&:hover': {
+                                    backgroundColor: 'rgba(255, 215, 0, 0.2)'
+                                }
+                            }}
+                            onClick={() => navigate('/shop')}
+                        >
+                            <Diamond sx={{ color: '#FFD700' }} />
+                            <Typography variant="subtitle1" fontWeight="bold" sx={{ color: '#FFD700' }}>
+                                {diamonds}
+                            </Typography>
                         </Box>
                     </Tooltip>
 
                     {/* Navigation Buttons */}
                     <Button color="inherit" onClick={() => navigate('/dashboard')}>Dashboard</Button>
                     <Button color="inherit" onClick={() => navigate('/courses')}>Cursos</Button>
+                    <Button
+                        color="inherit"
+                        onClick={() => navigate('/shop')}
+                        sx={{
+                            background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
+                            color: '#000',
+                            fontWeight: 'bold',
+                            '&:hover': {
+                                background: 'linear-gradient(135deg, #FFA500 0%, #FFD700 100%)'
+                            }
+                        }}
+                    >
+                        💎 Tienda
+                    </Button>
                 </Box>
 
                 {/* Theme & Profile Actions */}

@@ -2,6 +2,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGame } from '../context/GameContext';
 
+/**
+ * Componente LessonPlayer - Reproductor de lecciones interactivas con sistema de gamificación
+ * Permite a los usuarios responder preguntas sobre diferentes mentores de psicología
+ * y ganar diamantes y puntos por respuestas correctas.
+ */
 export default function LessonPlayer() {
     const navigate = useNavigate();
     const { id } = useParams();
@@ -19,7 +24,7 @@ export default function LessonPlayer() {
     const [showDiamondPopup, setShowDiamondPopup] = useState(false);
     const [diamondsEarned, setDiamondsEarned] = useState(0);
 
-    // Banco de preguntas por mentor
+    // Banco de preguntas por mentor (datos estáticos)
     const MENTOR_QUESTIONS = {
         1: [ // Sigmund Freud
             {
@@ -369,7 +374,10 @@ export default function LessonPlayer() {
         }
     }, [id, navigate]);
 
-    // Handler para seleccionar opción
+    /**
+     * Handler para seleccionar una opción de respuesta
+     * @param {number} optionIndex - Índice de la opción seleccionada
+     */
     const handleOptionClick = (optionIndex) => {
         if (showFeedback || questions.length === 0) return;
 
@@ -396,7 +404,9 @@ export default function LessonPlayer() {
         }
     };
 
-    // Handler para siguiente pregunta
+    /**
+     * Handler para avanzar a la siguiente pregunta
+     */
     const handleNext = () => {
         if (currentQuestion < questions.length - 1) {
             setCurrentQuestion(currentQuestion + 1);
@@ -407,7 +417,9 @@ export default function LessonPlayer() {
         }
     };
 
-    // Handler para reiniciar
+    /**
+     * Handler para reiniciar el juego
+     */
     const handleRetry = () => {
         setCurrentQuestion(0);
         setScore(0);
@@ -420,7 +432,7 @@ export default function LessonPlayer() {
         setShowDiamondPopup(false);
     };
 
-    // Si se acabaron las vidas
+    // Pantalla de Game Over - Se muestra cuando se acaban las vidas
     if (lives <= 0 && !isCompleted) {
         return (
             <div className="vista active">
@@ -449,7 +461,7 @@ export default function LessonPlayer() {
         );
     }
 
-    // Si completó todas las preguntas
+    // Pantalla de Completado - Se muestra cuando se completaron todas las preguntas
     if (isCompleted) {
         return (
             <div className="vista active">
@@ -546,14 +558,14 @@ export default function LessonPlayer() {
                         <div className="question-category">{currentQ.category}</div>
                         <h2 className="question-text">{currentQ.question}</h2>
 
-                        {/* Diamond Earned Popup */}
+                        {/* Popup de diamantes ganados */}
                         {showDiamondPopup && (
                             <div className="diamond-earned-popup">
                                 +10 💎
                             </div>
                         )}
 
-                        {/* Opciones */}
+                        {/* Opciones de respuesta */}
                         <div className="options-container">
                             {currentQ.options.map((option, index) => {
                                 const isCorrectOption = option === currentQ.correctAnswer;
@@ -586,7 +598,7 @@ export default function LessonPlayer() {
                             })}
                         </div>
 
-                        {/* Feedback */}
+                        {/* Feedback de respuesta */}
                         {showFeedback && (
                             <div className={`feedback-card ${isCorrect ? 'feedback-correct' : 'feedback-incorrect'}`}>
                                 <div className="feedback-header">

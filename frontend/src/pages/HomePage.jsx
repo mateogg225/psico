@@ -1,73 +1,215 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { cursos } from '../data/data';
 
+/**
+ * HomePage - Página de inicio con grid de mentores de psicología
+ * Cada mentor tiene su propio set de preguntas interactivas
+ */
 export default function HomePage() {
     const navigate = useNavigate();
-    const [randomTopic, setRandomTopic] = useState(null);
-    const [popularCourses, setPopularCourses] = useState([]);
-
-    useEffect(() => {
-        // Load random topic
-        if (cursos.length > 0) {
-            const randomCourse = cursos[Math.floor(Math.random() * cursos.length)];
-            if (randomCourse && randomCourse.lecciones.length > 0) {
-                setRandomTopic(randomCourse.lecciones[0]);
-            }
-
-            // Load popular courses (first 3 for now)
-            setPopularCourses(cursos.slice(0, 3));
-        }
-    }, []);
 
     return (
         <div className="vista active">
+            {/* Hero Section */}
             <section className="hero">
                 <div className="container">
-                    <h1 className="hero-title">🧠 Psicología en 5 Minutos</h1>
+                    <div className="hero-emoji floating-animation">🏝️</div>
+                    <h1 className="hero-title floating-animation-slow">Psico Isla</h1>
                     <p className="hero-subtitle">
-                        Microcursos diseñados para que entiendas conceptos fundamentales de forma rápida y clara
+                        La isla donde todos los amantes de la psicología nos encontramos
                     </p>
                     <button className="btn-primary" onClick={() => navigate('/courses')}>
-                        Explorar Cursos
+                        🏝️ Comenzar la Aventura
                     </button>
                 </div>
             </section>
 
-            {/* Random Topic */}
-            <section className="random-topic">
+            {/* Mentor Selection Grid - Elige tu Mentor */}
+            <section className="mentor-selection" style={{ marginBottom: '3rem' }}>
                 <div className="container">
-                    <h2>⏱️ Aprendé en 5 minutos sobre...</h2>
-                    <div id="tema-aleatorio" className="topic-card">
-                        {randomTopic && (
-                            <div className="course-card" onClick={() => navigate('/courses')}>
-                                <h3>{randomTopic.titulo}</h3>
-                                <p>{randomTopic.contenido.substring(0, 150)}...</p>
-                                <button className="btn-primary">Aprender Ahora</button>
+                    <div className="mentor-header">
+                        <h2 className="section-title text-center">🎓 Elige tu <span className="mentor-highlight">Mentor</span></h2>
+                        <p className="section-subtitle text-center">
+                            Aprende de los grandes maestros de la psicología
+                        </p>
+                    </div>
+
+                    <div className="mentors-grid">
+                        {/* Mentor 1: Sigmund Freud */}
+                        <div
+                            className="mentor-card"
+                            onClick={() => navigate('/lesson/1')}
+                        >
+                            <div className="mentor-avatar-container">
+                                <img
+                                    src="/freud-avatar.png"
+                                    alt="Sigmund Freud"
+                                    className="mentor-avatar"
+                                />
                             </div>
-                        )}
+                            <div className="mentor-info">
+                                <h3 className="mentor-name">Sigmund Freud</h3>
+                                <p className="mentor-topic">Psicoanálisis</p>
+                                <span className="mentor-badge">🧠 Fundador</span>
+                            </div>
+                        </div>
+
+                        {/* Mentor 2: B.F. Skinner */}
+                        <div
+                            className="mentor-card"
+                            onClick={() => navigate('/lesson/2')}
+                        >
+                            <div className="mentor-avatar-container">
+                                <img
+                                    src="/skinner-avatar.png"
+                                    alt="B.F. Skinner"
+                                    className="mentor-avatar"
+                                />
+                            </div>
+                            <div className="mentor-info">
+                                <h3 className="mentor-name">B.F. Skinner</h3>
+                                <p className="mentor-topic">Conductismo</p>
+                                <span className="mentor-badge">🔔 Condicionamiento</span>
+                            </div>
+                        </div>
+
+                        {/* Mentor 3: Jacques Lacan */}
+                        <div
+                            className="mentor-card"
+                            onClick={() => navigate('/lesson/3')}
+                        >
+                            <div className="mentor-avatar-container">
+                                <img
+                                    src="/lacan-avatar.png"
+                                    alt="Jacques Lacan"
+                                    className="mentor-avatar"
+                                />
+                            </div>
+                            <div className="mentor-info">
+                                <h3 className="mentor-name">Jacques Lacan</h3>
+                                <p className="mentor-topic">El Inconsciente</p>
+                                <span className="mentor-badge">💭 Lenguaje</span>
+                            </div>
+                        </div>
+
+                        {/* Mentor 4: Jean Piaget */}
+                        <div
+                            className="mentor-card"
+                            onClick={() => navigate('/lesson/4')}
+                        >
+                            <div className="mentor-avatar-container">
+                                <img
+                                    src="/piaget-avatar.png"
+                                    alt="Jean Piaget"
+                                    className="mentor-avatar"
+                                />
+                            </div>
+                            <div className="mentor-info">
+                                <h3 className="mentor-name">Jean Piaget</h3>
+                                <p className="mentor-topic">Desarrollo Cognitivo</p>
+                                <span className="mentor-badge">🧩 Etapas</span>
+                            </div>
+                        </div>
+
+                        {/* Mentor 5: Melanie Klein */}
+                        <div
+                            className="mentor-card"
+                            onClick={() => navigate('/lesson/5')}
+                        >
+                            <div className="mentor-avatar-container">
+                                <img
+                                    src="/klein-avatar.png"
+                                    alt="Melanie Klein"
+                                    className="mentor-avatar"
+                                />
+                            </div>
+                            <div className="mentor-info">
+                                <h3 className="mentor-name">Melanie Klein</h3>
+                                <p className="mentor-topic">Psicoanálisis Infantil</p>
+                                <span className="mentor-badge">🎨 Juego</span>
+                            </div>
+                        </div>
+
+                        {/* Mentor 6: Anna Freud */}
+                        <div
+                            className="mentor-card"
+                            onClick={() => navigate('/lesson/6')}
+                        >
+                            <div className="mentor-avatar-container">
+                                <img
+                                    src="/anna-avatar.png"
+                                    alt="Anna Freud"
+                                    className="mentor-avatar"
+                                />
+                            </div>
+                            <div className="mentor-info">
+                                <h3 className="mentor-name">Anna Freud</h3>
+                                <p className="mentor-topic">Mecanismos de Defensa</p>
+                                <span className="mentor-badge">🛡️ Protección</span>
+                            </div>
+                        </div>
+
+                        {/* Mentor 7: Carl Jung */}
+                        <div
+                            className="mentor-card"
+                            onClick={() => navigate('/lesson/7')}
+                        >
+                            <div className="mentor-avatar-container">
+                                <img
+                                    src="/jung-avatar.png"
+                                    alt="Carl Jung"
+                                    className="mentor-avatar"
+                                />
+                            </div>
+                            <div className="mentor-info">
+                                <h3 className="mentor-name">Carl Jung</h3>
+                                <p className="mentor-topic">Psicología Analítica</p>
+                                <span className="mentor-badge">🌙 Arquetipos</span>
+                            </div>
+                        </div>
+
+                        {/* Mentor 8: Carl Rogers */}
+                        <div
+                            className="mentor-card"
+                            onClick={() => navigate('/lesson/8')}
+                        >
+                            <div className="mentor-avatar-container">
+                                <img
+                                    src="/rogers-avatar.png"
+                                    alt="Carl Rogers"
+                                    className="mentor-avatar"
+                                />
+                            </div>
+                            <div className="mentor-info">
+                                <h3 className="mentor-name">Carl Rogers</h3>
+                                <p className="mentor-topic">Humanismo</p>
+                                <span className="mentor-badge">💚 Empatía</span>
+                            </div>
+                        </div>
+
+                        {/* Mentor 9: John Bowlby */}
+                        <div
+                            className="mentor-card"
+                            onClick={() => navigate('/lesson/9')}
+                        >
+                            <div className="mentor-avatar-container">
+                                <img
+                                    src="/bowlby-avatar.png"
+                                    alt="John Bowlby"
+                                    className="mentor-avatar"
+                                />
+                            </div>
+                            <div className="mentor-info">
+                                <h3 className="mentor-name">John Bowlby</h3>
+                                <p className="mentor-topic">Teoría del Apego</p>
+                                <span className="mentor-badge">🤱 Vínculos</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            {/* Popular Courses */}
-            <section className="popular-courses">
-                <div className="container">
-                    <h2 className="section-title">📚 Microcursos Populares</h2>
-                    <div id="cursos-populares" className="courses-grid">
-                        {popularCourses.map(curso => (
-                            <div key={curso.id} className="course-card" onClick={() => navigate(`/courses`)}>
-                                <div className="course-icon">{curso.imagen}</div>
-                                <h3 className="course-name">{curso.nombre}</h3>
-                                <p className="course-description">{curso.descripcion}</p>
-                                {curso.premium && <span className="course-badge">👑 Premium</span>}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Stats */}
+            {/* Stats Section */}
             <section className="stats">
                 <div className="container">
                     <div className="stats-grid">

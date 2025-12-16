@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cursos, NIVELES, LOGROS } from '../data/data';
+import { useGame } from '../context/GameContext';
+import { shopItems } from '../data/shopData';
 
 export default function DashboardPage() {
     // Dashboard Logic Migrated
     const navigate = useNavigate();
+    const { diamonds, inventory } = useGame();
     const [usuario, setUsuario] = useState(JSON.parse(localStorage.getItem('usuario')) || {
         nombre: "Usuario",
         email: "usuario@ejemplo.com",
@@ -36,14 +39,16 @@ export default function DashboardPage() {
     const nivelData = obtenerNivelActual();
     const siguienteNivel = NIVELES.find(n => n.nivel === nivelData.nivel + 1);
 
-    // Statistics
+    // Statistics - Con verificación de seguridad para evitar errores
     const totalLecciones = cursos.reduce((sum, c) => sum + c.lecciones.length, 0);
-    const progresoPorcentaje = Math.round((usuario.progreso.leccionesCompletadas.length / totalLecciones) * 100);
+    const leccionesCompletadas = usuario.progreso?.leccionesCompletadas || [];
+    const cursosCompletados = usuario.progreso?.cursosCompletados || [];
+    const progresoPorcentaje = Math.round((leccionesCompletadas.length / totalLecciones) * 100);
 
     // Courses in Progress
     const cursosEnProgreso = cursos.filter(c =>
-        c.lecciones.some(l => usuario.progreso.leccionesCompletadas.includes(l.id)) &&
-        !usuario.progreso.cursosCompletados.includes(c.id)
+        c.lecciones.some(l => leccionesCompletadas.includes(l.id)) &&
+        !cursosCompletados.includes(c.id)
     );
 
     return (
@@ -69,12 +74,12 @@ export default function DashboardPage() {
                     </div>
                     <div className="stat-box">
                         <div className="stat-icon">✅</div>
-                        <div className="stat-value">{usuario.progreso.cursosCompletados.length}</div>
+                        <div className="stat-value">{cursosCompletados.length}</div>
                         <div className="stat-name">Cursos Completados</div>
                     </div>
                     <div className="stat-box">
                         <div className="stat-icon">🔥</div>
-                        <div className="stat-value">{usuario.progreso.racha}</div>
+                        <div className="stat-value">{usuario.progreso?.racha || 0}</div>
                         <div className="stat-name">Días Consecutivos</div>
                     </div>
                 </div>
@@ -135,6 +140,37 @@ export default function DashboardPage() {
                     </div>
                 </div>
 
+                {/* Mi Consultorio Section */}
+                <div className="perfil-seccion">
+                    <h2>🏠 Mi Consultorio</h2>
+                    <p className="consultorio-subtitle">Así se ve tu espacio personalizado</p>
+
+                    {inventory.length > 0 ? (
+                        <div className="consultorio-container">
+                            <div className="consultorio-grid">
+                                {inventory.map(itemId => {
+                                    const item = shopItems.find(i => i.id === itemId);
+                                    return item ? (
+                                        <div key={item.id} className="consultorio-item" title={item.name}>
+                                            <div className="consultorio-item-icon">{item.icon}</div>
+                                            <div className="consultorio-item-name">{item.name}</div>
+                                        </div>
+                                    ) : null;
+                                })}
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="consultorio-empty">
+                            <div className="empty-icon">🏚️</div>
+                            <p>Tu consultorio está vacío</p>
+                            <p className="empty-subtitle">¡Visita la tienda para decorarlo!</p>
+                            <button className="btn-shop" onClick={() => navigate('/shop')}>
+                                💎 Ir a la Tienda
+                            </button>
+                        </div>
+                    )}
+                </div>
+
                 {/* Achievements Section */}
                 <div className="perfil-seccion">
                     <h2>🏆 Logros Desbloqueados</h2>
@@ -154,10 +190,10 @@ export default function DashboardPage() {
                     <div id="logros" className="logros-grid">
                         {/* Simple view from array logic in original code */}
                         {[
-                            { nombre: 'Primera Lección', icon: '🎯', desbloqueado: usuario.progreso.leccionesCompletadas.length >= 1 },
-                            { nombre: '5 Lecciones', icon: '📚', desbloqueado: usuario.progreso.leccionesCompletadas.length >= 5 },
-                            { nombre: 'Racha de 7 días', icon: '🔥', desbloqueado: usuario.progreso.racha >= 7 },
-                            { nombre: 'Primer Curso', icon: '🏆', desbloqueado: usuario.progreso.cursosCompletados.length >= 1 }
+                            { nombre: 'Primera Lección', icon: '🎯', desbloqueado: leccionesCompletadas.length >= 1 },
+                            { nombre: '5 Lecciones', icon: '📚', desbloqueado: leccionesCompletadas.length >= 5 },
+                            { nombre: 'Racha de 7 días', icon: '🔥', desbloqueado: (usuario.progreso?.racha || 0) >= 7 },
+                            { nombre: 'Primer Curso', icon: '🏆', desbloqueado: cursosCompletados.length >= 1 }
                         ].map((l, idx) => (
                             <div key={idx} className={`logro ${l.desbloqueado ? 'desbloqueado' : 'bloqueado'}`}>
                                 <div style={{ fontSize: '2rem', filter: !l.desbloqueado ? 'grayscale(1) opacity(0.3)' : '' }}>{l.icon}</div>
